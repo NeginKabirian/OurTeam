@@ -1,0 +1,17 @@
+﻿@model List<Planner.Models.TaskItem>
+
+@if (Model != null)
+{
+    <form asp-controller="Auth" asp-action="Logout" method="post">
+        <button type="submit" class="btn btn-danger">Log Out</button>
+    </form>
+
+    <h1>Your To-Do List</h1>
+
+    <ul>
+        @foreach (var task in Model)
+        {
+            <li>@task.Title - @(task.IsCompleted ? "Completed" : "Pending")</li>
+        }
+    </ul>
+}

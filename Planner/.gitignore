@@ -1,0 +1,58 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code settings
+.vscode/
+
+# Visual Studio settings
+.vs/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Runtime generated files
+*.dbmdl
+*.pdb
+*.cache
+*.log
+
+# Entity Framework Migrations snapshot backups (optional to ignore)
+# If you want to track migrations, don’t ignore these
+# Migrations/
+
+# libman (Library Manager) cache files
+libman.json
+
+# Node modules (if using npm)
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# App secrets
+appsettings.Production.json
+appsettings.Staging.json
+
+# IIS Express
+.vsconfig
+.idea/
+.vs/
+.vscode/
+*.vspscc
+*.vssscc
+
+# Logs
+logs/
+*.log
+
+# Mac / Linux system files
+.DS_Store
+Thumbs.db

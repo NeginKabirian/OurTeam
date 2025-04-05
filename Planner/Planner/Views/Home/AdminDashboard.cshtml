@@ -1,0 +1,18 @@
+﻿@model List<Planner.Models.User>
+
+<h1>Admin Dashboard</h1>
+
+<form asp-controller="Auth" asp-action="Logout" method="post">
+    <button type="submit" class="btn btn-danger">Log Out</button>
+</form>
+
+@if(Model != null)
+{
+    <ul>
+    
+    @foreach (var user in Model)
+    {
+        <li>@user.Name (@user.Email) - @user.Role</li>
+    }
+    </ul>
+}

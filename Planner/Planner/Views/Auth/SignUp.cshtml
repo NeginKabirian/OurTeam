@@ -1,0 +1,8 @@
+﻿@model User
+
+<form asp-action="SignUp" method="post">
+    <input asp-for="Name" placeholder="Name" required />
+    <input asp-for="Email" type="email" placeholder="Email" required />
+    <input asp-for="Password" type="password" placeholder="Password" required />
+    <button type="submit">Sign Up</button>
+</form>
