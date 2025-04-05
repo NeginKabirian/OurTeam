@@ -55,6 +55,9 @@ namespace Planner.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 

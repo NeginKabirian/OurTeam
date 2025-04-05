@@ -14,4 +14,7 @@
             <li>@task.Title - @(task.IsCompleted ? "Completed" : "Pending")</li>
         }
     </ul>
+   
+    <a asp-controller="AdminTask" asp-action="Index" class="btn btn-primary">Go to Admin Dashboard</a>
+
 }

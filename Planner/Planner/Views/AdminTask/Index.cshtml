@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Planner.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "Task Management";
+}
+
+<div class="container mt-5">
+    <div class="card bg-dark text-white shadow-lg rounded-4">
+        <div class="card-header d-flex justify-content-between align-items-center border-secondary">
+            <h3 class="mb-0">🗂️ Task Management Panel</h3>
+            <a href="@Url.Action("Create", "AdminTask")" class="btn btn-success">➕ New Task</a>
+        </div>
+
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-center text-muted">No tasks found.</p>
+            }
+            else
+            {
+                <table class="table table-dark table-striped table-hover rounded-3 overflow-hidden">
+                    <thead class="table-secondary text-dark">
+                        <tr>
+                            <th>Title</th>
+                            <th>User</th>
+                            <th>Deadline</th>
+                            <th>Completed</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var task in Model)
+                        {
+                            <tr>
+                                <td>@task.Title</td>
+                                <td>@task.User?.Name</td>
+                                <td>@task.Deadline.ToString("yyyy-MM-dd")</td>
+                                <td>
+                                    @if (task.IsCompleted)
+                                    {
+                                        <span class="badge bg-success">Yes</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">No</span>
+                                    }
+                                </td>
+                                <td>
+                                    <a href="@Url.Action("Edit", "AdminTask", new { id = task.Id })" class="btn btn-sm btn-info">✏️ Edit</a>
+                                    <a href="@Url.Action("Delete", "AdminTask", new { id = task.Id })" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this task?');">🗑️ Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

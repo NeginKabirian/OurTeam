@@ -12,7 +12,9 @@ namespace Planner.Models
         public string Title { get; set; }
 
         public bool IsCompleted { get; set; }
-
+		[Required]
+		public DateTime Deadline { get; set; }
+        [Required]
         public int UserId { get; set; }
         public User User { get; set; }
     }

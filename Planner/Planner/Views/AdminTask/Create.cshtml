@@ -1,0 +1,39 @@
+﻿@model Planner.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<h2>Create Task</h2>
+
+<div class="container mt-5">
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label">Task Title</label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Deadline" class="form-label">Deadline</label>
+            <input asp-for="Deadline" class="form-control" type="datetime-local" />
+            <span asp-validation-for="Deadline" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="UserId" class="form-label">Assign User</label>
+            <select asp-for="UserId" class="form-select">
+                <option value="">Select a user</option>
+                @foreach (var user in ViewBag.Users)
+                {
+                    <option value="@user.Id">@user.Name</option>
+                }
+            </select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Create Task</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>

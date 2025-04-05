@@ -12,8 +12,8 @@ using Planner.Data;
 namespace Planner.Migrations
 {
     [DbContext(typeof(PlannerDbContext))]
-    [Migration("20250404110808_Third")]
-    partial class Third
+    [Migration("20250405182219_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,6 +57,9 @@ namespace Planner.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Deadline")
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
