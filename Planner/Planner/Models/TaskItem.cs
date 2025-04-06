@@ -10,13 +10,15 @@ namespace Planner.Models
 
         [Required]
         public string Title { get; set; }
-
+       // public string Description { get; set; }
         public bool IsCompleted { get; set; }
 		[Required]
 		public DateTime Deadline { get; set; }
         [Required]
         public int UserId { get; set; }
         public User User { get; set; }
+        //public string label;
+        //public string state { get; set; }
     }
 
 }

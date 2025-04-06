@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Planner.Helpers
@@ -11,7 +12,19 @@ namespace Planner.Helpers
 
             if (string.IsNullOrEmpty(role) || role.ToLower() != "admin")
             {
-                context.Result = new RedirectToActionResult("Login", "Auth", null);
+                context.Result = new ForbidResult();
+            }
+        }
+    }
+    public class UserAuthorizeAttribute : Attribute, IAuthorizationFilter
+    {
+        public void OnAuthorization(AuthorizationFilterContext context)
+        {
+            var role = context.HttpContext.Request.Cookies["user_role"];
+
+            if (string.IsNullOrEmpty(role) || role.ToLower() != "user")
+            {
+                context.Result = new ForbidResult();
             }
         }
     }
