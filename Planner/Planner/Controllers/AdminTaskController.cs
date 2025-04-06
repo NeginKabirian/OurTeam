@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Planner.Data;
+using Planner.Helpers;
 using Planner.Models;
 
 namespace Planner.Controllers
 {
-	public class AdminTaskController : Controller
+    [AdminAuthorize]
+    public class AdminTaskController : Controller
 	{
 		private readonly PlannerDbContext _dbContext;
 		public AdminTaskController(PlannerDbContext dbContext)
@@ -30,18 +32,18 @@ namespace Planner.Controllers
         {
            
 
-            // Model state is valid, try to find the user and assign them
-            Console.WriteLine($"UserId: {task.UserId}");
+            
+            
             var user = await _dbContext.Users.FindAsync(task.UserId);
 
             if (user != null)
             {
-                task.User = user; // Assign the user to the task
-                Console.WriteLine($"Task UserId: {task.UserId}, Assigned User: {task.User?.Name}");
+                task.User = user; 
+                
 
                 await _dbContext.Tasks.AddAsync(task);
                 await _dbContext.SaveChangesAsync();
-                return RedirectToAction("Index"); // Redirect to Index after saving the task
+                return RedirectToAction("Index"); 
             }
             else
             {
@@ -49,6 +51,36 @@ namespace Planner.Controllers
                 ViewBag.Users = _dbContext.Users.ToList(); 
                 return View(task); 
             }
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var task = await _dbContext.Tasks.FindAsync(id);
+            if (task == null) return NotFound();
+
+            ViewBag.Users = _dbContext.Users.ToList();
+            return View(task);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(TaskItem task)
+        {
+           
+            
+            _dbContext.Tasks.Update(task);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Index");
+            
+            ViewBag.Users = _dbContext.Users.ToList();
+            return View(task);
+        }
+        public async Task<IActionResult> Delete(int id)
+        {
+            var task = await _dbContext.Tasks.FindAsync(id);
+            if (task == null) return NotFound();
+
+            _dbContext.Tasks.Remove(task);
+            await _dbContext.SaveChangesAsync();
+            return RedirectToAction("Index");
         }
     }
 
