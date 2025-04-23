@@ -15,8 +15,8 @@ namespace Planner.Controllers
 		{
 			_dbContext = dbContext;
 		}
-
-		public async Task<IActionResult> Index()
+        [AdminAuthorize]
+        public async Task<IActionResult> Index()
 		{
 			var tasks = await _dbContext.Tasks.Include(t => t.User).ToListAsync();
 			return View(tasks);
