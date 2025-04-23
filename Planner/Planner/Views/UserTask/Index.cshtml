@@ -1,6 +1,9 @@
-﻿@model List<Planner.Models.TaskItem>
+﻿
+ @model List<Planner.Models.TaskItem>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var pendingTasks = Model.Count(t => !t.IsCompleted);
+    var completedTasks = Model.Count(t => t.IsCompleted);
 }
 
 <div class="container mt-5">
@@ -11,48 +14,81 @@
         </form>
     </div>
 
-    <div class="table-responsive shadow-lg rounded">
-        <table class="table table-dark table-hover align-middle">
-            <thead class="table-secondary text-dark">
-                <tr>
-                    <th>📝 Title</th>
-                    <th>📅 Deadline</th>
-                    <th>📊 Status</th>
-                    <th>✅ Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var task in Model)
-                {
-                    <tr class="border-bottom">
-                        <td>@task.Title</td>
-                        <td>@task.Deadline.ToString("yyyy-MM-dd")</td>
-                        <td>
-                            @if (task.IsCompleted)
-                            {
-                                <span class="badge bg-success">Completed</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-warning text-dark">Pending</span>
-                            }
-                        </td>
-                        <td>
-                            @if (!task.IsCompleted && task.Deadline >= DateTime.Now)
-                            {
-                                <form asp-action="MarkAsDone" asp-controller="UserTask" method="post" class="d-inline">
-                                    <input type="hidden" name="id" value="@task.Id" />
-                                    <button type="submit" class="btn btn-sm btn-outline-success">✔ Mark as Done</button>
-                                </form>
-                            }
-                            else if (task.IsCompleted)
-                            {
-                                <i class="text-success">✔ Done</i>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+    <div class="mb-4 text-light">
+        <span class="me-3">📌 <strong>@Model.Count</strong> Total Tasks</span>
+        <span class="me-3 text-warning">⏳ <strong>@pendingTasks</strong> Pending</span>
+        <span class="text-success">✅ <strong>@completedTasks</strong> Completed</span>
     </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info shadow-sm text-center">
+            <strong>No tasks found!</strong> Let's get productive 📝
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive shadow-lg rounded">
+            <table class="table table-dark table-hover align-middle">
+                <thead class="table-secondary text-dark">
+                    <tr>
+                        <th>📝 Title</th>
+                        <th>📅 Deadline</th>
+                        <th>📊 Status</th>
+                        <th>✅ Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in Model)
+                    {
+                        <tr class="border-bottom">
+                            <td>@task.Title</td>
+                            <td>@task.Deadline.ToString("yyyy-MM-dd")</td>
+                            <td>
+                                @if (task.IsCompleted)
+                                {
+                                    <span class="badge bg-success">Completed</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!task.IsCompleted && task.Deadline >= DateTime.Now)
+                                {
+                                    <form asp-action="MarkAsDone" asp-controller="UserTask" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@task.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-success">✔ Mark as Done</button>
+                                    </form>
+                                }
+                                else if (task.IsCompleted)
+                                {
+                                    <i class="text-success">✔ Done</i>
+                                }
+                                else
+                                {
+                                    <i class="text-danger">❌ Missed</i>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
+
+<style>
+    body {
+        background-color: #121212;
+    }
+
+    h2 {
+        font-weight: bold;
+    }
+
+    table td, table th {
+        vertical-align: middle;
+    }
+</style>

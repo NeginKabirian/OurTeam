@@ -14,23 +14,19 @@
             <li>@task.Title - @(task.IsCompleted ? "Completed" : "Pending")</li>
         }
     </ul>
-   
-     
-     
-       
 
-   
+
+
+
+
     @if (Context.Request.Cookies["user_role"] == "Admin")
     {
         <a asp-controller="AdminTask" asp-action="Index" class="btn btn-primary">Go to Admin Dashboard</a>
     }
-    /*@if (Context.Request.Cookies["user_role"] == "User")
+    @if (Context.Request.Cookies["user_role"] == "OrdinaryUser")
     {
         
         <a asp-controller="UserTask" asp-action="Index" class="btn btn-primary">Go to User Dashboard</a>
-    }*/
-
-    <a asp-controller="UserTask" asp-action="Index" class="btn btn-primary">Go to User Dashboard</a>
-}*/
-
+    }
+  
 }

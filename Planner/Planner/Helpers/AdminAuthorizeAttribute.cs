@@ -9,11 +9,13 @@ namespace Planner.Helpers
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             var role = context.HttpContext.Request.Cookies["user_role"];
+            Console.WriteLine(context.HttpContext.Request.Cookies["user_role"]);
 
-            if (string.IsNullOrEmpty(role) || role.ToLower() != "admin")
+            if (string.IsNullOrEmpty(role) || role != "Admin")
             {
                 context.Result = new ForbidResult();
             }
+            
         }
     }
     public class UserAuthorizeAttribute : Attribute, IAuthorizationFilter
@@ -22,7 +24,7 @@ namespace Planner.Helpers
         {
             var role = context.HttpContext.Request.Cookies["user_role"];
 
-            if (string.IsNullOrEmpty(role) || role.ToLower() != "user")
+            if (string.IsNullOrEmpty(role) || role != "OrdinaryUser")
             {
                 context.Result = new ForbidResult();
             }
