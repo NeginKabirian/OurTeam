@@ -10,7 +10,7 @@ namespace Planner.Helpers
         {
             var role = context.HttpContext.Request.Cookies["user_role"];
             Console.WriteLine(context.HttpContext.Request.Cookies["user_role"]);
-
+     
             if (string.IsNullOrEmpty(role) || role != "Admin")
             {
                 context.Result = new ForbidResult();

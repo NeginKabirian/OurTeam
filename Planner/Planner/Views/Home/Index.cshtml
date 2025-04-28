@@ -18,11 +18,8 @@
 
 
 
-
-    @if (Context.Request.Cookies["user_role"] == "Admin")
-    {
-        <a asp-controller="AdminTask" asp-action="Index" class="btn btn-primary">Go to Admin Dashboard</a>
-    }
+    
+  
     @if (Context.Request.Cookies["user_role"] == "OrdinaryUser")
     {
         
