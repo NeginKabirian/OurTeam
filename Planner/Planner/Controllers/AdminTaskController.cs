@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Specialized;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Planner.Data;
@@ -19,11 +20,13 @@ namespace Planner.Controllers
         public async Task<IActionResult> Index()
 		{
 			var tasks = await _dbContext.Tasks.Include(t => t.User).ToListAsync();
-			return View(tasks);
+                 
+            return View(tasks);
 		}
 		public IActionResult Create()
 		{
-			ViewBag.Users = _dbContext.Users.ToList(); 
+			ViewBag.Users = _dbContext.Users.Where(user => user.Role == 0).ToList(); 
+
             return View();
         }
         
@@ -47,8 +50,8 @@ namespace Planner.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid User"); 
-                ViewBag.Users = _dbContext.Users.ToList(); 
+                ModelState.AddModelError(string.Empty, "Invalid User");
+                ViewBag.Users = _dbContext.Users.Where(user => user.Role == 0).ToList();
                 return View(task); 
             }
         }
@@ -58,7 +61,7 @@ namespace Planner.Controllers
             var task = await _dbContext.Tasks.FindAsync(id);
             if (task == null) return NotFound();
 
-            ViewBag.Users = _dbContext.Users.ToList();
+            ViewBag.Users = _dbContext.Users.Where(user => user.Role == 0).ToList();
             return View(task);
         }
         [HttpPost]
@@ -69,8 +72,8 @@ namespace Planner.Controllers
             _dbContext.Tasks.Update(task);
             await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
-            
-            ViewBag.Users = _dbContext.Users.ToList();
+
+            ViewBag.Users = _dbContext.Users.Where(user => user.Role == 0).ToList();
             return View(task);
         }
         public async Task<IActionResult> Delete(int id)
