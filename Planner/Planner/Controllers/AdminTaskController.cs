@@ -16,6 +16,7 @@ namespace Planner.Controllers
 		{
 			_dbContext = dbContext;
 		}
+
         [AdminAuthorize]
         public async Task<IActionResult> Index()
 		{
@@ -33,10 +34,6 @@ namespace Planner.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(TaskItem task)
         {
-           
-
-            
-            
             var user = await _dbContext.Users.FindAsync(task.UserId);
 
             if (user != null)

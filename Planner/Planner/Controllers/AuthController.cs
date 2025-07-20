@@ -5,6 +5,7 @@ using System;
 using Planner.Data;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Caching.Memory;
+using Planner.Models.DTO;
 
 namespace Planner.Controllers
 {
@@ -26,17 +27,25 @@ namespace Planner.Controllers
         }
 
         [HttpPost]
-        public IActionResult SignUp(User user)
+        public IActionResult SignUp(UserDTO user)
         {
-            // if (ModelState.IsValid)
-            // {
-                user.Password = HashPassword(user.Password); // Hash the password
-                user.Role = UserRole.OrdinaryUser; // Default role for new users
-                _dbContext.Users.Add(user);
+            if (ModelState.IsValid)
+            {
+                // Check if the email is unique 
+                var isEmailUsed = _dbContext.Users.Any(u => u.Email == user.Email);
+                if(isEmailUsed)
+                    return View(user);
+
+                User newUser = new User();
+                newUser.Name = user.Name;
+                newUser.Email = user.Email;
+                newUser.Password = HashPassword(user.Password); // Hash the password
+                newUser.Role = UserRole.OrdinaryUser; // Default role for new users
+                _dbContext.Users.Add(newUser);
                 _dbContext.SaveChanges();
 
                 return RedirectToAction("Login");
-            // }
+            }
 
             return View(user);
         }
@@ -46,72 +55,6 @@ namespace Planner.Controllers
         {
             return View();
         }
-
-        //[HttpPost]
-        //public IActionResult Login(string email, string password, bool rememberMe)
-        //{
-        //    string cacheKey = $"FailedLogin_{email.ToLower()}";
-
-        //    _memoryCache.TryGetValue(cacheKey, out int attempts);
-
-        //    if (attempts >= 5)
-        //    {
-        //        ModelState.AddModelError(string.Empty, "Too many failed login attempts. Please try again later.");
-        //        return View();
-        //    }
-
-        //    var hashedPassword = HashPassword(password);
-        //    var user = _dbContext.Users.FirstOrDefault(u => u.Email == email && u.Password == hashedPassword);
-
-        //    if (user != null)
-        //    {
-        //        _memoryCache.Remove(cacheKey);
-        //        // Generate and set cookies
-        //        var token = GenerateToken();
-        //        var expirationTime = rememberMe ? DateTime.UtcNow.AddDays(7) : DateTime.UtcNow.AddHours(1);
-
-        //        // Add or update session
-        //        var session = _dbContext.Sessions.FirstOrDefault(s => s.UserId == user.Id);
-
-        //        if (session == null)
-        //        {
-        //            session = new Session { UserId = user.Id, SessionToken = token, ExpirationTime = expirationTime };
-        //            _dbContext.Sessions.Add(session);
-        //        }
-        //        else
-        //        {
-        //            session.SessionToken = token;
-        //            session.ExpirationTime = expirationTime;
-        //            _dbContext.Sessions.Update(session);
-        //        }
-
-        //        _dbContext.SaveChanges();
-
-        //        var cookieOptions = new CookieOptions
-        //        {
-        //            HttpOnly = true,
-        //            Secure = true,
-        //            SameSite = SameSiteMode.Strict,
-        //            Path = "/",
-        //            Expires = expirationTime
-        //        };
-
-        //        Response.Cookies.Append("session_id", token, cookieOptions);
-        //        Response.Cookies.Append("user_role", user.Role.ToString(), cookieOptions);
-
-        //        return Redirect("/");
-        //    }
-        //    attempts++;
-
-
-        //    _memoryCache.Set(cacheKey, attempts, new MemoryCacheEntryOptions
-        //    {
-        //        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(10)
-        //    });
-
-        //    ModelState.AddModelError(string.Empty, "Invalid login credentials");
-        //    return View();
-        //}
 
         [HttpPost]
         public IActionResult Login(string email, string password, bool rememberMe)
@@ -229,7 +172,6 @@ namespace Planner.Controllers
             return View();
         }
 
-
         [HttpPost]
         public IActionResult Logout()
         {
@@ -239,10 +181,7 @@ namespace Planner.Controllers
             return RedirectToAction("Login");
         }
 
-       
-
         // Utility methods
-
         private string HashPassword(string password)
         {
             using var sha256 = SHA256.Create();
@@ -261,7 +200,6 @@ namespace Planner.Controllers
         {
             return Request.Cookies.ContainsKey("session_id");
         }
-
-        
+ 
     }
 }

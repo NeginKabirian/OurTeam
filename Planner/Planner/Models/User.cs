@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Planner.Models
 {
@@ -27,6 +28,7 @@ namespace Planner.Models
         public UserRole Role { get; set; }
 
         public ICollection<TaskItem> Tasks { get; set; }
+
         public ICollection<Session> Sessions { get; set; }
     }
 

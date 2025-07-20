@@ -1,14 +1,4 @@
-﻿
-<@* form asp-action="Login" method="post">
-    <input name="email" type="email" placeholder="Email" required />
-    <input name="password" type="password" placeholder="Password" required />
-    <label>
-        <input name="rememberMe" type="checkbox" />
-        Remember Me
-    </label>
-    <button type="submit">Login</button>
-</form> *@
-@{
+﻿@{
     Layout = null;
 }
 
@@ -100,6 +90,10 @@
 
         <div class="d-grid">
             <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+
+        <div class="text-center mt-3">
+            <p>Don't have an account? <a asp-action="SignUp" class="text-primary">sign up</a></p>
         </div>
     </form>
 </div>

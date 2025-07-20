@@ -1,110 +1,107 @@
-﻿@* @model Planner.Models.TaskItem
+﻿@model Planner.Models.TaskItem
+
+@{
+    Layout = null;
+}
 
 @{
     ViewData["Title"] = "Edit Task";
 }
 
-<div class="container mt-5">
-    <div class="card shadow rounded-4">
-        <div class="card-header bg-primary text-white">
-            <h3 class="mb-0">Edit Task</h3>
-        </div>
-        <div class="card-body">
-            <form asp-action="Edit" method="post">
-                <input type="hidden" asp-for="Id" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Edit Task</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-                <div class="mb-3">
-                    <label asp-for="Title" class="form-label fw-bold">Title</label>
-                    <input asp-for="Title" class="form-control rounded-pill" placeholder="Enter task title" />
-                    <span asp-validation-for="Title" class="text-danger small"></span>
-                </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-                <div class="mb-3">
-                    <label asp-for="Deadline" class="form-label fw-bold">Deadline</label>
-                    <input asp-for="Deadline" type="datetime-local" class="form-control rounded-pill" />
-                    <span asp-validation-for="Deadline" class="text-danger small"></span>
-                </div>
+    <style>
+        body {
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-                <div class="form-check form-switch mb-3">
-                    <input asp-for="IsCompleted" class="form-check-input" type="checkbox" role="switch" />
-                    <label asp-for="IsCompleted" class="form-check-label fw-bold">Is Completed?</label>
-                </div>
+        .task-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 600px;
+        }
 
-                <div class="mb-3">
-                    <label asp-for="UserId" class="form-label fw-bold">Assign User</label>
-                    <select asp-for="UserId" class="form-select rounded-pill">
-                        <option value="">-- Select a user --</option>
-                        @foreach (var user in ViewBag.Users)
-                        {
-                            <option value="@user.Id" selected="@(user.Id == Model.UserId)">
-                                @user.Name
-                            </option>
-                        }
-                    </select>
-                    <span asp-validation-for="UserId" class="text-danger small"></span>
-                </div>
+        .form-control, .form-select {
+            border-radius: 10px;
+        }
 
-                <div class="d-flex justify-content-between">
-                    <button type="submit" class="btn btn-success rounded-pill px-4">Save</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4">Cancel</a>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+        .btn-primary {
+            border-radius: 10px;
+            background-color: #6C63FF;
+            border: none;
+        }
 
-@section Scripts {
-    @await Html.PartialAsync("_ValidationScriptsPartial")
-}
- *@
- @model Planner.Models.TaskItem
+        .btn-primary:hover {
+            background-color: #5a52e0;
+        }
 
-@{
-    ViewData["Title"] = "Edit Task";
-}
+        .btn-secondary {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
 
-<h2>Edit Task</h2>
+    <div class="task-card">
+        <h2 class="text-center mb-4">Edit Task</h2>
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
 
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label">Title</label>
+                <input asp-for="Title" class="form-control" placeholder="Task Title" required />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="Deadline" class="form-label"></label>
-        <input asp-for="Deadline" type="datetime-local" class="form-control" />
-        <span asp-validation-for="Deadline" class="text-danger"></span>
-    </div>
+            <div class="mb-3">
+                <label asp-for="Deadline" class="form-label">Deadline</label>
+                <input asp-for="Deadline" type="datetime-local" class="form-control" required />
+                <span asp-validation-for="Deadline" class="text-danger"></span>
+            </div>
 
-    <div class="form-check mb-3">
-        <input asp-for="IsCompleted" class="form-check-input" type="checkbox" id="isCompletedCheck" />
-        <label asp-for="IsCompleted" class="form-check-label ms-2" for="isCompletedCheck">
-            @Html.DisplayNameFor(model => model.IsCompleted)
-        </label>
-    </div>
+            <div class="form-check form-switch mb-3">
+                <input asp-for="IsCompleted" class="form-check-input" type="checkbox" id="isCompletedSwitch" />
+                <label asp-for="IsCompleted" class="form-check-label ms-2" for="isCompletedSwitch">Completed</label>
+            </div>
 
+            <div class="mb-3">
+                <label asp-for="UserId" class="form-label">Assign User</label>
+                <select asp-for="UserId" class="form-select">
+                    <option value="">Select a user</option>
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        <option value="@user.Id" selected="@(user.Id == Model.UserId)">
+                            @user.Name
+                        </option>
+                    }
+                </select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>
 
-    <div class="mb-3">
-        <label asp-for="UserId" class="form-label">Assign User</label>
-        <select asp-for="UserId" class="form-select">
-            <option value="">Select a user</option>
-            @foreach (var user in ViewBag.Users)
-            {
-                <option value="@user.Id" selected="@(user.Id == Model.UserId)">
-                    @user.Name
-                </option>
-            }
-        </select>
-        <span asp-validation-for="UserId" class="text-danger"></span>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-</form>
+</body>
+</html>
 
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
